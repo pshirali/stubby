@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<context id="stubby">
+
+  <component id="st-logger" dotted-name="stubby.logger.ColorLogger" strategy="singleton">
+    <init>
+      <arg reference="st-config"/>
+    </init>
+  </component>
+
+  <component id="st-config" dotted-name="stubby.parser.CLIParser" strategy="singleton">
+    <init>
+      <arg><str>bh</str></arg>
+      <arg keyword="description"><str>
+        Stubby is an application that listens to HTTP requests as a stub.
+        It accepts requests on all URLs and all supported methods. It also
+        computes stats on all the requests received. The stats can either
+        be retrieved at runtime by making requests to /_st/* or by sending
+        SIGUSR1 to the process.
+      </str></arg>
+      <arg keyword="epilog"><str>
+        If you run Stubby without the `--skip-ctrl` switch (default
+        behavior), make a HTTP request to http://localhost:8080/_st/help
+        to get help on all the routes.
+      </str></arg>
+    </init>
+  </component>
+
+  <component id="st-urlhits" dotted-name="stubby.stats.URLHitCollector" strategy="singleton">
+    <init>
+      <arg><str>url-hits</str></arg>
+    </init>
+  </component>
+
+  <component id="st-methodhits" dotted-name="stubby.stats.MethodHitCollector" strategy="singleton">
+    <init>
+      <arg><str>method-hits</str></arg>
+    </init>
+  </component>
+
+  <component id="st-wordhits" dotted-name="stubby.stats.WordHitCollector" strategy="singleton">
+    <init>
+      <arg><str>word-hits</str></arg>
+    </init>
+  </component>
+
+  <component id="st-stats" dotted-name="stubby.stats.StatsCollector" strategy="singleton">
+    <init>
+      <arg><str>stats</str></arg>
+      <arg reference="st-urlhits"/>
+      <arg reference="st-methodhits"/>
+      <arg reference="st-wordhits"/>
+    </init>
+  </component>
+
+  <component id="st-app" dotted-name="stubby.app.Application" strategy="singleton">
+    <init>
+      <arg reference="st-config"/>
+      <arg reference="st-logger"/>
+      <arg reference="st-stats"/>
+    </init>
+  </component>
+
+</context>
