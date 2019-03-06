@@ -1,4 +1,4 @@
-Aglyph==2.1.1
-bottle==0.12.10
-colorlog==2.10.0
-six==1.10.0
+Aglyph==3.0.0.post1
+bottle==0.12.16
+colorlog==4.0.2
+six==1.12.0
