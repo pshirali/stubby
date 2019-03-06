@@ -132,7 +132,7 @@ class Application(object):
                         desc="Show this help.")
             self._route("<url:re:\/_st\/.*>", all_methods,
                         self._404_handler,
-                        desc="Unsupported methods and routes.")
+                        desc="Unsupported methods and routes. Returns 404.")
         else:
             log.info("*** Detected option `--skip-ctrl`.")
             log.info("    Skipped registering control routes.")
