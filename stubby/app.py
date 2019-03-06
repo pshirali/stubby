@@ -42,6 +42,7 @@ import signal
 import pprint
 
 from .trace import traceable
+from .version import __version__
 
 
 log = logging.getLogger(__name__)
@@ -108,11 +109,16 @@ class Application(object):
         s = sys.version_info
         py_info = "Python {}.{}.{}".format(s.major, s.minor, s.micro)
         log.info("")
-        log.info("     |         |    |         ")
-        log.info(",---.|--- .   .|---.|---.,   .")
-        log.info("`---.|    |   ||   ||   ||   |")
-        log.info("`---'`---'`---'`---'`---'`---|")
-        log.info("                         `---'")
+        log.info("────────────────────────────────────────────")
+        log.info("")
+        log.info("            |         |    |         ")
+        log.info("       ,---.|--- .   .|---.|---.,   .")
+        log.info("       `---.|    |   ||   ||   ||   |")
+        log.info("       `---'`---'`---'`---'`---'`---|")
+        log.info("                                `---'")
+        log.info("       version: {}".format(__version__))
+        log.info("")
+        log.info("────────────────────────────────────────────")
         log.info("")
         log.info("pid = {} | {}".format(os.getpid(), py_info))
 
