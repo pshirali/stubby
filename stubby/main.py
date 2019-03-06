@@ -57,12 +57,13 @@ https://en.wikipedia.org/wiki/Dependency_injection
 __author__ = "Praveen Shirali <praveengshirali@gmail.com>"
 
 
-if __name__ == "__main__":
-
+def main():
     from aglyph.context import XMLContext
     from aglyph.assembler import Assembler
+    from os.path import dirname, join
 
-    context = XMLContext("app-context.xml")
+    ctx_file = join(dirname(__file__), "app-context.xml")
+    context = XMLContext(ctx_file)
     assembler = Assembler(context)
 
     # The CLIParser has been explicitly assembled to only address the
@@ -74,5 +75,8 @@ if __name__ == "__main__":
     # args are cached for subsequent retrieval.
     #
     assembler.assemble("st-config").get_config()
-
     assembler.assemble("st-app").run()
+
+
+if __name__ == "__main__":
+    main()
