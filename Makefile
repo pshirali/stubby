@@ -42,12 +42,22 @@ install-dev-deps: ## Install development and test dependencies
 	@pip3 install -r dev-requirements.txt
 
 .PHONY: install
-install: uninstall install-pkg-deps ## Install package in site-packages
+install: uninstall install-pkg-deps ## Install pkg-deps and package in site-packages
 	@echo "> $@"
 	@pip3 install .
 
 .PHONY: editable
-editable: uninstall install-pkg-deps ## Install entrypoint(s) for development
+editable: uninstall install-pkg-deps ## Install pkg-deps and entrypoint(s) for development
+	@echo "> $@"
+	@pip3 install --editable .
+
+.PHONY: install-pkg
+install-pkg: uninstall ## Install only package in site-packages
+	@echo "> $@"
+	@pip3 install .
+
+.PHONY: editable-pkg
+editable-pkg: uninstall ## Install only entrypoint(s) for development
 	@echo "> $@"
 	@pip3 install --editable .
 

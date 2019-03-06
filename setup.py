@@ -7,7 +7,7 @@ HERE = abspath(dirname(__file__))
 
 def read(*parts):
     # intentionally *not* adding an encoding option to open, See:
-    #   https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
+    # https://github.com/pypa/virtualenv/issues/201#issuecomment-3145690
     import codecs
     with codecs.open(join(HERE, *parts), 'r') as fp:
         return fp.read()
