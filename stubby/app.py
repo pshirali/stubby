@@ -130,6 +130,9 @@ class Application(object):
                         desc="Reset current stats")
             self._route("/_st/help", ["GET"], self._show_help,
                         desc="Show this help.")
+            self._route("<url:re:\/_st\/.*>", all_methods,
+                        self._404_handler,
+                        desc="Unsupported methods and routes.")
         else:
             log.info("*** Detected option `--skip-ctrl`.")
             log.info("    Skipped registering control routes.")
@@ -169,6 +172,11 @@ class Application(object):
         if query:
             path = "{}?{}".format(path, query)
         self._new_record(method, path)
+
+    def _404_handler(self, url):
+        method = bottle.request.method
+        log.debug("Unsupported method or URL: {} {}".format(method, url))
+        return bottle.HTTPResponse(status=404)
 
     def _show_help(self):
         return self._help_info
