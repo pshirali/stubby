@@ -40,6 +40,35 @@ from .trace import traceable
 log = logging.getLogger(__name__)
 
 
+LOG_COLORS = {
+    "DEBUG":    "bold_cyan",
+    "INFO":     "bold_green",
+    "WARNING":  "bold_yellow",
+    "ERROR":    "bold_red",
+    "CRITICAL": "bold_red,bg_white",
+}
+
+SECONDARY_LOG_COLORS = {
+    "message": {
+        "DEBUG":    "cyan",
+        "INFO":     "green",
+        "WARNING":  "yellow",
+        "ERROR":    "red",
+        "CRITICAL": "red,bg_white",
+    }
+}
+
+AGLYPH_SECONDARY_LOG_COLORS = {
+    "message": {
+        "DEBUG":    "purple",
+        "INFO":     "blue",
+        "WARNING":  "yellow",
+        "ERROR":    "red",
+        "CRITICAL": "red,bg_white",
+    }
+}
+
+
 @traceable
 class Logger(object):
     """A logger which does nothing"""
@@ -56,13 +85,26 @@ class BasicLogger(Logger):
         self._config = cfg.get_config()
         self._logger = logging.getLogger("stubby")
         self._sh = logging.StreamHandler()
+        formatter = self._get_formatter()
+        if formatter:
+            self._sh.setFormatter(formatter)
         self._logger.addHandler(self._sh)
         level = "DEBUG" if self._config.debug is True else "INFO"
         self._logger.setLevel(level)
         if self._config.aglyph is True:
             self._aglyph = logging.getLogger("aglyph")
             self._aglyph.setLevel(level)
-            self._aglyph.addHandler(self._sh)
+            self._aglyph_sh = logging.StreamHandler()
+            formatter = self._get_formatter(
+                prefix=" [ Aglyph ] ",
+                secondary_log_colors=AGLYPH_SECONDARY_LOG_COLORS
+            )
+            if formatter:
+                self._aglyph_sh.setFormatter(formatter)
+            self._aglyph.addHandler(self._aglyph_sh)
+
+    def _get_formatter(self, prefix=""):
+        return
 
 
 @traceable
@@ -71,28 +113,19 @@ class ColorLogger(BasicLogger):
 
     def __init__(self, cfg):
         super(ColorLogger, self).__init__(cfg)
+
+    def _get_formatter(self,
+                       prefix="",
+                       log_colors=LOG_COLORS,
+                       secondary_log_colors=SECONDARY_LOG_COLORS):
         from colorlog import ColoredFormatter
         formatter = ColoredFormatter(
             "%(asctime)s.%(msecs)03d %(log_color)s%(levelname)10s%(reset)s "
-            "| %(message_log_color)s%(message)s",
+            "| " + prefix + "%(message_log_color)s%(message)s",
             datefmt="%Y-%M-%d %H:%m:%S",
             reset=True,
-            log_colors={
-                "DEBUG":    "bold_cyan",
-                "INFO":     "bold_green",
-                "WARNING":  "bold_yellow",
-                "ERROR":    "bold_red",
-                "CRITICAL": "bold_red,bg_white",
-            },
-            secondary_log_colors={
-                "message": {
-                    "DEBUG":    "cyan",
-                    "INFO":     "green",
-                    "WARNING":  "yellow",
-                    "ERROR":    "red",
-                    "CRITICAL": "red,bg_white",
-                }
-            },
+            log_colors=log_colors,
+            secondary_log_colors=secondary_log_colors,
             style="%"
         )
-        self._sh.setFormatter(formatter)
+        return formatter
