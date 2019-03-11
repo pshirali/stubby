@@ -46,6 +46,11 @@ install: uninstall install-pkg-deps ## Install pkg-deps and package in site-pack
 	@echo "> $@"
 	@pip3 install .
 
+.PHONY: install-all
+install-all: uninstall install-pkg-deps install-dev-deps ## Install pkg-deps, dev dependencies and package
+	@echo "> $@"
+	@pip3 install .
+
 .PHONY: editable
 editable: uninstall install-pkg-deps ## Install pkg-deps and entrypoint(s) for development
 	@echo "> $@"
