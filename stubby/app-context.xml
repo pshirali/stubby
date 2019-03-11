@@ -9,7 +9,7 @@
 
   <component id="st-config" dotted-name="stubby.parser.CLIParser" strategy="singleton">
     <init>
-      <arg><str>bh</str></arg>
+      <arg><str>stubby</str></arg>
       <arg keyword="description"><str>
         Stubby is an application that listens to HTTP requests as a stub.
         It accepts requests on all URLs and all supported methods. It also
